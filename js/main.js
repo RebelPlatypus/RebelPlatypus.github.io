@@ -13,7 +13,6 @@ window.onload = function() {
      
     function preload() {
         game.load.spritesheet('flyer','assets/flying.png',63,65,5);
-        game.load.spritesheet('death','assets/death.png',63,65,8);
         game.load.audio('madeon',['assets/cutthekid.mp3']);
         game.load.script('filter','assets/Plasma.js');
         game.load.image('block','assets/default.png');
