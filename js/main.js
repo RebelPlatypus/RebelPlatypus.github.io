@@ -40,6 +40,7 @@ window.onload = function() {
         game.world.setBounds(0,0,30000,600);
          
         // Compatability for 2.0.3
+        game.physics.startSystem(Phaser.Physics.ARCADE);
         game.physics.enable(flyer, Phaser.Physics.ARCADE);
          
         // Playable character
@@ -116,13 +117,6 @@ window.onload = function() {
         // Move the little guy!
         if(game.input.mousePointer.isDown){
             game.physics.arcade.moveToPointer(flyer,300);
-            // But not when he's already there!
-            if(Phaser.Rectangle.contains(flyer.body, game.input.x, game.input.y)){
-                flyer.body.velocity.setTo(0,0);
-            }
-        }
-        else{
-            flyer.body.velocity.setTo(0,0);
         }
     }
      
