@@ -39,8 +39,7 @@ window.onload = function() {
         // Moving onward!
         game.world.setBounds(0,0,30000,600);
          
-        // Compatability for 2.0.0
-        game.physics.startSystem(Phaser.Physics.ARCADE);
+        // Compatability for 2.0.3
         game.physics.enable(flyer, Phaser.Physics.ARCADE);
          
         // Playable character
