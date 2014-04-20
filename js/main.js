@@ -39,8 +39,8 @@ window.onload = function() {
         // Moving onward!
         game.world.setBounds(0,0,30000,600);
          
-         // Compatability for 2.0.0
-         game.physics.enable(flyer, Phaser.Physics.P2);
+        // Compatability for 2.0.0
+        game.physics.enable(flyer, P2);
          
         // Playable character
         flyer = game.add.sprite(300,200,'flyer');
