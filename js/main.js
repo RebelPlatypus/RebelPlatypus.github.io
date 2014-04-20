@@ -40,7 +40,8 @@ window.onload = function() {
         game.world.setBounds(0,0,30000,600);
          
         // Compatability for 2.0.0
-        game.physics.enable(flyer, Phaser.Physics.Arcade);
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.physics.enable(flyer, Phaser.Physics.ARCADE);
          
         // Playable character
         flyer = game.add.sprite(300,200,'flyer');
