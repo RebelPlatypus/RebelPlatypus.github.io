@@ -87,7 +87,7 @@ window.onload = function() {
         location.content = "Progress: " + distance + "%";
          
         // Death by bar
-        game.physics.overlap(flyer, bar, death, null, this);
+        game.physics.arcade.overlap(flyer, bar, death, null, this);
  
         // Difficulty increase
         if(flyer.x >=10000){
@@ -100,7 +100,7 @@ window.onload = function() {
         }
          
         // Collisions
-        game.physics.collide(flyer, blocks);
+        game.physics.arcade.collide(flyer, blocks);
          
         // Winning!
         if(flyer.x>=29700){
@@ -116,7 +116,7 @@ window.onload = function() {
     function controls(){
         // Move the little guy!
         if(game.input.mousePointer.isDown){
-            game.physics.moveToPointer(flyer,300);
+            game.physics.arcade.moveToPointer(flyer,300);
             // But not when he's already there!
             if(Phaser.Rectangle.contains(flyer.body, game.input.x, game.input.y)){
                 flyer.body.velocity.setTo(0,0);
