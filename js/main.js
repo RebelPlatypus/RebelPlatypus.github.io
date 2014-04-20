@@ -13,7 +13,6 @@ window.onload = function() {
      
     function preload() {
         game.load.spritesheet('flyer','assets/flying.png',63,65,5);
-        game.load.spritesheet('death','assets/death.png',63,65,8);
         game.load.audio('madeon',['assets/cutthekid.mp3']);
         game.load.script('filter','assets/Plasma.js');
         game.load.image('block','assets/default.png');
@@ -39,6 +38,10 @@ window.onload = function() {
          
         // Moving onward!
         game.world.setBounds(0,0,30000,600);
+         
+        // Compatability for 2.0.3
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+        game.physics.enable(flyer, Phaser.Physics.ARCADE);
          
         // Playable character
         flyer = game.add.sprite(300,200,'flyer');
@@ -80,11 +83,11 @@ window.onload = function() {
         filter.blueShift -=0.001;
          
         // Update game progress
-        var distance = Math.floor(((flyer.x)/30000)*100);
+        var distance = Math.floor(((flyer.body.x)/30000)*100);
         location.content = "Progress: " + distance + "%";
          
         // Death by bar
-        game.physics.overlap(flyer, bar, death, null, this);
+        game.physics.arcade.overlap(flyer, bar, death, null, this);
  
         // Difficulty increase
         if(flyer.x >=10000){
@@ -97,10 +100,10 @@ window.onload = function() {
         }
          
         // Collisions
-        game.physics.collide(flyer, blocks);
+        game.physics.arcade.collide(flyer, blocks);
          
         // Winning!
-        if(flyer.x>=29700){
+        if(flyer.body.x>=29700){
             win();
         }
     }
@@ -113,14 +116,7 @@ window.onload = function() {
     function controls(){
         // Move the little guy!
         if(game.input.mousePointer.isDown){
-            game.physics.moveToPointer(flyer,300);
-            // But not when he's already there!
-            if(Phaser.Rectangle.contains(flyer.body, game.input.x, game.input.y)){
-                flyer.body.velocity.setTo(0,0);
-            }
-        }
-        else{
-            flyer.body.velocity.setTo(0,0);
+            game.physics.arcade.moveToPointer(flyer,300);
         }
     }
      
