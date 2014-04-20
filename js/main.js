@@ -83,7 +83,7 @@ window.onload = function() {
         filter.blueShift -=0.001;
          
         // Update game progress
-        var distance = Math.floor(((flyer.x)/30000)*100);
+        var distance = Math.floor(((flyer.body.x)/30000)*100);
         location.content = "Progress: " + distance + "%";
          
         // Death by bar
@@ -103,7 +103,7 @@ window.onload = function() {
         game.physics.arcade.collide(flyer, blocks);
          
         // Winning!
-        if(flyer.x>=29700){
+        if(flyer.body.x>=29700){
             win();
         }
     }
