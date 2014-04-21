@@ -4,7 +4,9 @@ Menu.prototype = {
 
 	preload: function() { },
 
-	create: function() { },
+	create: function() { 
 
-	preload: function() { }
+		console.log("Main Menu Entered");
+	},
+
 };

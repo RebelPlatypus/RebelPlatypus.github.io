@@ -38,6 +38,8 @@ Game.prototype = {
 
 	     
 	create: function() {
+		
+		console.log("Main Game Started");
 
 		// Funky background!
        		background = game.add.sprite(0,0);

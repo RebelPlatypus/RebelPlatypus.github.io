@@ -10,15 +10,18 @@ Preloader.prototype = {
 
 	preload: function() {
 
+		console.log("Preloader starting");
+
 		//ADD PRELOAD BAR LOADING AND STARTING HERE!!!
 		// ^WHAT THIS SAYS!!
 
-		game.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
-       		game.load.audio('madeon',['assets/music/cutthekid.mp3']);
-        	game.load.script('filter','assets/sprites/Plasma.js');
-        	game.load.image('block','assets/sprites/default.png');
-        	game.load.image('bar','assets/sprites/BAR.png');	
-
+		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
+       		this.load.audio('madeon',['assets/music/cutthekid.mp3']);
+        	this.load.script('filter','assets/effects/Plasma.js');
+        	this.load.image('block','assets/sprites/default.png');
+        	this.load.image('bar','assets/sprites/BAR.png');	
+		
+		console.log("Resources loaded");
  	},
 
 	create: function() {
@@ -30,8 +33,9 @@ Preloader.prototype = {
 
 		//Waits for the music to finish loading
 
-   		if (this.cache.isSoundDecoded('music') && this.ready == false)
+   		if (this.cache.isSoundDecoded('madeon') && this.ready == false)
 		{
+			console.log("Preloader processes finished");
 			this.ready = true;
 			this.game.state.start('MainMenu');
 		}
