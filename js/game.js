@@ -1,16 +1,42 @@
 var Game = function(game) { };
 
+var flyer;
+var music;
+var background;
+var filter;
+var blocks;
+var bar;
+var location;
+var style = {font: "100px Arial", fill: "#ff0044", align: "center"};
+
+function controls(){
+	// Move the little guy!
+	if(game.input.mousePointer.isDown){
+		game.physics.arcade.moveToPointer(flyer,300);
+	}
+}
+     
+// Kill a flyer caught by the bar
+function death(){
+	flyer.kill();
+	var text = "YOU LOSE!";
+	var t = game.add.text(game.camera.x+200, 0, text, style);
+	music.pause();
+}
+     
+// We've got a winner!
+function win() {
+	location.content = "Progress: " + 100 + "%!";
+	var text = "YOU WIN!";
+	var t = game.add.text(0, 0, text, style);
+	t.fixedToCamera = true;
+	t.cameraOffset.setTo(250,25);
+	bar.kill();
+}
+
 Game.prototype = {
 
-	var flyer;
-    	var music;
-    	var background;
-    	var filter;
-    	var blocks;
-    	var bar;
-    	var location;
-    	var style = {font: "100px Arial", fill: "#ff0044", align: "center"};
-     
+	     
 	create: function() {
 
 		// Funky background!
@@ -93,28 +119,5 @@ Game.prototype = {
         	}
 	}	
 	
-	function controls(){
-        	// Move the little guy!
-       		if(game.input.mousePointer.isDown){
-        	    game.physics.arcade.moveToPointer(flyer,300);
-        	}
-    	}
-     
-    	// Kill a flyer caught by the bar
-    	function death(){
-    		flyer.kill();
-        	var text = "YOU LOSE!";
-        	var t = game.add.text(game.camera.x+200, 0, text, style);
-        	music.pause();
-    	}
-     
-    	// We've got a winner!
-    	function win() {
-        	location.content = "Progress: " + 100 + "%!";
-        	var text = "YOU WIN!";
-        	var t = game.add.text(0, 0, text, style);
-        	t.fixedToCamera = true;
-        	t.cameraOffset.setTo(250,25);
-        	bar.kill();
-    	}
+
 };
