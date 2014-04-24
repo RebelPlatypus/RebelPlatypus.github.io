@@ -31,14 +31,19 @@ Preloader.prototype = {
 
 	update: function() { 
 
-		//Waits for the music to finish loading
+
+		//Temporary Music loading bypass
+		console.log("Preloader processes finished");
+		this.game.state.start('MainMenu');
+
+		/*//Waits for the music to finish loading
 
    		if (this.cache.isSoundDecoded('madeon') && this.ready == false)
 		{
 			console.log("Preloader processes finished");
 			this.ready = true;
 			this.game.state.start('MainMenu');
-		}
+		}*/
 	}
 
 };
