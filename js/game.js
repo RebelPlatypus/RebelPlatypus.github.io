@@ -21,8 +21,8 @@ function controls(game){
 function death(){
 	flyer.kill();
 	var text = "YOU LOSE!";
-	var t = this.game.add.text(game.camera.x+200, 0, text, style);
-	music.pause();
+	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
+	//music.pause();
 }
      
 // We've got a winner!
@@ -48,7 +48,7 @@ Game.prototype = {
         	background.height = 600;
         	filter = this.game.add.filter('Plasma',800,600);
         	background.filters = [filter];
-
+	
         	// Moving onward!
         	this.game.world.setBounds(0,0,30000,600);
          
@@ -60,29 +60,33 @@ Game.prototype = {
         	this.game.physics.enable(flyer, Phaser.Physics.ARCADE);
         	flyer.animations.add('fly');
         	flyer.animations.play('fly',10,true);
-		flyer.anchor.setTo(0.5, 0.5);
+		flyer.body.setSize(40,30,10,20);
         	this.game.camera.follow(flyer);
          
         	// Create random blocks
         	blocks = this.game.add.group();
+		blocks.enableBody = true;
+		blocks.physicsBodyType = Phaser.Physics.ARCADE;
+
         	for(var i = 0; i<1500; i++){
-        		blocks.create(this.game.world.randomX, this.game.world.randomY, 'block');
+        		var b = blocks.create(this.game.world.randomX, this.game.world.randomY, 'block');
+			b.body.immovable = true;
         	}
-        	//blocks.setAll('body.immovable',true);
          
-        	/*// Beware the bar
+        	// Beware the bar
         	bar = this.game.add.sprite(0,0,'bar');
-        	//bar.body.velocity.x = 220;
-        	//bar.body.setRectangle(20,600,100,0);
+		this.game.physics.enable(bar, Phaser.Physics.ARCADE);
+        	bar.body.velocity.x = 220;
+        	bar.body.setSize(20,600,100,0);
          
-        	// Update text
+        	/*// Update text
         	var t1 = this.game.add.text(10000, 0, "10,000!", style);
         	var t2 = this.game.add.text(20000, 0, "20,000!", style); 
         	location = this.game.add.text(0,0, "Progress: 0%", {font: "50px Arial", fill: "#ffffff", align: "center"});
-        	location.fixedToCamera = true;
+        	//location.fixedToCamera = true;
         	//location.cameraOffset.setTo(260,525);
          
-        	// Music
+        	/*// Music
         	music = this.game.add.audio('madeon',1,true);
         	music.play('',0,1,true);*/
  	},
@@ -95,7 +99,7 @@ Game.prototype = {
         	filter.update();
         	filter.blueShift -=0.001;
          
-        	/*// Update game progress
+        	// Update game progress
         	var distance = Math.floor(((flyer.body.x)/30000)*100);
         	location.content = "Progress: " + distance + "%";
          
@@ -109,7 +113,7 @@ Game.prototype = {
          
         	// SUPER HARD MODE
         	if(flyer.x >=20000){
-        	    //bar.body.velocity.x=300;
+        	    bar.body.velocity.x=300;
         	}
          
         	// Collisions
@@ -118,7 +122,7 @@ Game.prototype = {
         	// Winning!
         	if(flyer.body.x>=29700){
         		win();
-        	}*/
+        	}
 	}	
 	
 
