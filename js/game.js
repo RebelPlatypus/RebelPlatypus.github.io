@@ -86,7 +86,7 @@ Game.prototype = {
         	//location.fixedToCamera = true;
         	//location.cameraOffset.setTo(260,525);
          
-        	/*// Music
+        	// Music
         	music = this.game.add.audio('madeon',1,true);
         	music.play('',0,1,true);*/
  	},
