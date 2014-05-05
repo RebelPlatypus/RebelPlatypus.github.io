@@ -13,6 +13,8 @@ var style = {font: "100px Arial", fill: "#ff0044", align: "center"};
 var flyspeed;
 var poweruptimer = 100;
 var beardriving = false;
+var rocketboost = false;
+var cont = true; //Whether or not you keep playing. Becomes false when you win or lose.
 
 function controls(game){
 	// Move the little guy!
@@ -28,14 +30,15 @@ function death(){
 	flyer.kill();
 	var text = "YOU LOSE!";
 	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
+	cont = false;
 	//music.pause();
 }
 
 //WHat happens when you collide into a cracked brick.
 function crumble(sprite, block){
    	sprite.body.velocity.x = 0;
-	block.damage(8);
-	if(beardriving) {block.damage(42);}
+	block.damage(1);
+	if(beardriving) {block.damage(49);}
 //	flyspeed -= 150;
 }
      
@@ -48,6 +51,7 @@ function win() {
 	t.fixedToCamera = true;
 	t.cameraOffset.setTo(250,25);
 	bar.kill();
+	cont = false;
 }
 
 //Turns any block into a cracked block.
@@ -60,16 +64,29 @@ function createCrack(b){
 }
 //When you collide with a power-up block, this activates the power up.
 function powerup(sprite, block){
+	returnToNormalcy(sprite);
 	block.damage(10);
-	sprite.damage(1);
-	flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'drivingbear');
-	sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
-//	flyer.body.setSize(40,30,10,20);
-    sprite.game.camera.follow(flyer);
-	beardriving = true;
-	poweruptimer = 500;
+	var r = Math.random();//Randomly determining which power-ups we get.
+	if (r > .5){
+		flyer.damage(1);
+		flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'drivingbear');
+		sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
+		sprite.game.camera.follow(flyer);
+		beardriving = true;
+	}
+	else{
+		flyer.damage(1);
+		flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y, 'rocketflyer');
+		sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
+		flyer.body.setSize(40,30,10,20);
+		sprite.game.camera.follow(flyer);
+		flyspeed = 500;
+		rocketboost = true;
+	}
+	poweruptimer = 150;
 }
 
+//After the power-up timer is up, this resets everything back to normal.
 function returnToNormalcy(sprite){
 	sprite.damage(1);
     flyer = sprite.game.add.sprite(sprite.body.x,sprite.body.y,'flyer');
@@ -78,8 +95,9 @@ function returnToNormalcy(sprite){
     flyer.animations.play('fly',10,true);
 	flyer.body.setSize(40,30,10,20);
     sprite.game.camera.follow(flyer);
+	flyspeed = 300;
 	beardriving=false;
-
+	rocketboost=false;
 }
 
 Game.prototype = {
@@ -198,7 +216,7 @@ Game.prototype = {
 			this.game.physics.arcade.collide(flyer, powerblock, powerup);
 			
 			//Wearing off powerups
-			if(beardriving){
+			if((beardriving||rocketboost)&&cont){
 				poweruptimer -= 1;
 				if(poweruptimer == 0){
 					returnToNormalcy(flyer);
