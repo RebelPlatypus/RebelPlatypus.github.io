@@ -5,15 +5,18 @@ var music;
 var background;
 var filter;
 var blocks;
+var cracks;
 var bar;
 var location;
 var style = {font: "100px Arial", fill: "#ff0044", align: "center"};
+var flyspeed;
 
 function controls(game){
 	// Move the little guy!
 
 	//if(game.input.mousePointer.isDown){
-		game.physics.arcade.moveToPointer(flyer,300);
+		game.physics.arcade.moveToPointer(flyer,flyspeed);
+		if(flyspeed < 300) flyspeed += 15;
 	//}
 }
      
@@ -24,8 +27,16 @@ function death(){
 	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
 	//music.pause();
 }
+
+//WHat happens when you collide into a cracked brick.
+function crumble(sprite, block){
+   	sprite.body.velocity.x = 0;
+	block.damage(8);
+//	flyspeed -= 150;
+}
      
 // We've got a winner!
+//Bugged.
 function win() {
 	location.content = "Progress: " + 100 + "%!";
 	var text = "YOU WIN!";
@@ -33,6 +44,13 @@ function win() {
 	t.fixedToCamera = true;
 	t.cameraOffset.setTo(250,25);
 	bar.kill();
+}
+function createCrack(b){
+	var c = cracks.create(b.body.x, b.body.y, 'crackblock');
+	c.health = 50;
+	c.body.immovable = true;
+	c.scale.x = 0.5;
+	c.scale.y = 0.5;
 }
 
 Game.prototype = {
@@ -62,15 +80,34 @@ Game.prototype = {
         	flyer.animations.play('fly',10,true);
 		flyer.body.setSize(40,30,10,20);
         	this.game.camera.follow(flyer);
-         
-        	// Create random blocks
+			flyspeed = 300;
+			
+         //Block creation
+        	// Create stone blocks
         	blocks = this.game.add.group();
 		blocks.enableBody = true;
 		blocks.physicsBodyType = Phaser.Physics.ARCADE;
-
+			//Create cracked blocks
+			cracks = this.game.add.group();
+			cracks.enableBody = true;
+			cracks.physicsBodyType = Phaser.Physics.ARCADE;
+			
+			//Placing the blocks
         	for(var i = 0; i<1500; i++){
-        		var b = blocks.create(this.game.world.randomX, this.game.world.randomY, 'block');
-			b.body.immovable = true;
+        		var b;
+				var y = this.game.world.randomY;
+				//Determining if the blocks are cracked or not.
+				if(Math.abs(y-300) < 300*Math.random()){
+					b = cracks.create(this.game.world.randomX, y, 'crackblock');
+					b.health = 50;
+				}
+				else{
+					b = blocks.create(this.game.world.randomX, y, 'stoneblock');
+					b.events.onKilled.add(function(b, cracks) {createCrack(b);}, this);//When the block takes enough damage, it cracks.
+				}
+				b.body.immovable = true;
+				b.scale.x = 0.5;
+				b.scale.y = 0.5;
         	}
          
         	// Beware the bar
@@ -118,12 +155,12 @@ Game.prototype = {
          
         	// Collisions
         	this.game.physics.arcade.collide(flyer, blocks);
+			this.game.physics.arcade.collide(flyer, cracks, crumble);
          
         	// Winning!
+			//Currently not working.
         	if(flyer.body.x>=29700){
         		win();
         	}
-	}	
-	
-
+	}
 };

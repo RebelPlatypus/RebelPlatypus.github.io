@@ -20,6 +20,8 @@ Preloader.prototype = {
         	this.load.script('filter','assets/effects/Plasma.js');
         	this.load.image('block','assets/sprites/default.png');
         	this.load.image('bar','assets/sprites/BAR.png');	
+			this.load.image('stoneblock','assets/sprites/RockTile.jpg');
+			this.load.image('crackblock','assets/sprites/RockCrackTile.jpg');
 		
 		console.log("Resources loaded");
  	},
