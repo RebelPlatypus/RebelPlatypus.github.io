@@ -6,10 +6,13 @@ var background;
 var filter;
 var blocks;
 var cracks;
+var powerblock;
 var bar;
 var location;
 var style = {font: "100px Arial", fill: "#ff0044", align: "center"};
 var flyspeed;
+var poweruptimer = 100;
+var beardriving = false;
 
 function controls(game){
 	// Move the little guy!
@@ -32,6 +35,7 @@ function death(){
 function crumble(sprite, block){
    	sprite.body.velocity.x = 0;
 	block.damage(8);
+	if(beardriving) {block.damage(42);}
 //	flyspeed -= 150;
 }
      
@@ -45,12 +49,37 @@ function win() {
 	t.cameraOffset.setTo(250,25);
 	bar.kill();
 }
+
+//Turns any block into a cracked block.
 function createCrack(b){
 	var c = cracks.create(b.body.x, b.body.y, 'crackblock');
 	c.health = 50;
 	c.body.immovable = true;
 	c.scale.x = 0.5;
 	c.scale.y = 0.5;
+}
+//When you collide with a power-up block, this activates the power up.
+function powerup(sprite, block){
+	block.damage(10);
+	sprite.damage(1);
+	flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'drivingbear');
+	sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
+//	flyer.body.setSize(40,30,10,20);
+    sprite.game.camera.follow(flyer);
+	beardriving = true;
+	poweruptimer = 500;
+}
+
+function returnToNormalcy(sprite){
+	sprite.damage(1);
+    flyer = sprite.game.add.sprite(sprite.body.x,sprite.body.y,'flyer');
+    sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
+    flyer.animations.add('fly');
+    flyer.animations.play('fly',10,true);
+	flyer.body.setSize(40,30,10,20);
+    sprite.game.camera.follow(flyer);
+	beardriving=false;
+
 }
 
 Game.prototype = {
@@ -78,7 +107,7 @@ Game.prototype = {
         	this.game.physics.enable(flyer, Phaser.Physics.ARCADE);
         	flyer.animations.add('fly');
         	flyer.animations.play('fly',10,true);
-		flyer.body.setSize(40,30,10,20);
+			flyer.body.setSize(40,30,10,20);
         	this.game.camera.follow(flyer);
 			flyspeed = 300;
 			
@@ -92,18 +121,28 @@ Game.prototype = {
 			cracks.enableBody = true;
 			cracks.physicsBodyType = Phaser.Physics.ARCADE;
 			
+			//Create powerup blocks
+			powerblock = this.game.add.group();
+			powerblock.enableBody = true;
+			powerblock.physicsBodyType = Phaser.Physics.ARCADE;
+			
 			//Placing the blocks
         	for(var i = 0; i<1500; i++){
         		var b;
 				var y = this.game.world.randomY;
 				//Determining if the blocks are cracked or not.
-				if(Math.abs(y-300) < 300*Math.random()){
+				if(i%30 == 0){
+					b = powerblock.create(this.game.world.randomX, y, 'powerup');
+					b.health = 1;
+				}
+				else if(Math.abs(y-300) < 300*Math.random()){
 					b = cracks.create(this.game.world.randomX, y, 'crackblock');
 					b.health = 50;
 				}
 				else{
 					b = blocks.create(this.game.world.randomX, y, 'stoneblock');
-					b.events.onKilled.add(function(b, cracks) {createCrack(b);}, this);//When the block takes enough damage, it cracks.
+					b.events.onKilled.add(function(b) {createCrack(b);}, this);//When the block is 'destroyed', it becomes cracked.
+					b.health = 5000;
 				}
 				b.body.immovable = true;
 				b.scale.x = 0.5;
@@ -156,6 +195,15 @@ Game.prototype = {
         	// Collisions
         	this.game.physics.arcade.collide(flyer, blocks);
 			this.game.physics.arcade.collide(flyer, cracks, crumble);
+			this.game.physics.arcade.collide(flyer, powerblock, powerup);
+			
+			//Wearing off powerups
+			if(beardriving){
+				poweruptimer -= 1;
+				if(poweruptimer == 0){
+					returnToNormalcy(flyer);
+				}
+			}
          
         	// Winning!
 			//Currently not working.
