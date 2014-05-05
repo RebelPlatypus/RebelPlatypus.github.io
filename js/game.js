@@ -15,6 +15,8 @@ var poweruptimer = 100;
 var beardriving = false;
 var rocketboost = false;
 var cont = true; //Whether or not you keep playing. Becomes false when you win or lose.
+var bullet;
+var bulletup = false;
 
 function controls(game){
 	// Move the little guy!
@@ -67,12 +69,18 @@ function powerup(sprite, block){
 	returnToNormalcy(sprite);
 	block.damage(10);
 	var r = Math.random();//Randomly determining which power-ups we get.
-	if (r > .5){
+	if (r < .33){
 		flyer.damage(1);
 		flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'drivingbear');
 		sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
 		sprite.game.camera.follow(flyer);
 		beardriving = true;
+	}
+	else if (r < .66){
+		bullet = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'bullet');
+	    sprite.game.physics.enable(bullet, Phaser.Physics.ARCADE);
+		bullet.body.velocity.x = 400;
+		bulletup = true;
 	}
 	else{
 		flyer.damage(1);
@@ -80,7 +88,7 @@ function powerup(sprite, block){
 		sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
 		flyer.body.setSize(40,30,10,20);
 		sprite.game.camera.follow(flyer);
-		flyspeed = 500;
+		flyspeed = 400;
 		rocketboost = true;
 	}
 	poweruptimer = 150;
@@ -89,6 +97,7 @@ function powerup(sprite, block){
 //After the power-up timer is up, this resets everything back to normal.
 function returnToNormalcy(sprite){
 	sprite.damage(1);
+	bullet.damage(10);
     flyer = sprite.game.add.sprite(sprite.body.x,sprite.body.y,'flyer');
     sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
     flyer.animations.add('fly');
@@ -98,6 +107,11 @@ function returnToNormalcy(sprite){
 	flyspeed = 300;
 	beardriving=false;
 	rocketboost=false;
+}
+//What happens when the bullet collides into an object
+function shoot(sprite, block){
+	block.damage(50);
+	sprite.body.velocity.x = 400;
 }
 
 Game.prototype = {
@@ -144,12 +158,17 @@ Game.prototype = {
 			powerblock.enableBody = true;
 			powerblock.physicsBodyType = Phaser.Physics.ARCADE;
 			
+			//Create bullet
+			bullet = this.game.add.sprite(300,200, 'bullet');
+			this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
+			bullet.damage(10);
+
 			//Placing the blocks
         	for(var i = 0; i<1500; i++){
         		var b;
 				var y = this.game.world.randomY;
 				//Determining if the blocks are cracked or not.
-				if(i%30 == 0){
+				if(i%60 == 0){
 					b = powerblock.create(this.game.world.randomX, y, 'powerup');
 					b.health = 1;
 				}
@@ -160,7 +179,7 @@ Game.prototype = {
 				else{
 					b = blocks.create(this.game.world.randomX, y, 'stoneblock');
 					b.events.onKilled.add(function(b) {createCrack(b);}, this);//When the block is 'destroyed', it becomes cracked.
-					b.health = 5000;
+					b.health = 50;
 				}
 				b.body.immovable = true;
 				b.scale.x = 0.5;
@@ -169,7 +188,7 @@ Game.prototype = {
          
         	// Beware the bar
         	bar = this.game.add.sprite(0,0,'bar');
-		this.game.physics.enable(bar, Phaser.Physics.ARCADE);
+			this.game.physics.enable(bar, Phaser.Physics.ARCADE);
         	bar.body.velocity.x = 220;
         	bar.body.setSize(20,600,100,0);
          
@@ -214,9 +233,11 @@ Game.prototype = {
         	this.game.physics.arcade.collide(flyer, blocks);
 			this.game.physics.arcade.collide(flyer, cracks, crumble);
 			this.game.physics.arcade.collide(flyer, powerblock, powerup);
+			this.game.physics.arcade.collide(bullet, blocks, shoot);
+			this.game.physics.arcade.collide(bullet, cracks, shoot);
 			
 			//Wearing off powerups
-			if((beardriving||rocketboost)&&cont){
+			if((beardriving||rocketboost||bulletup)&&cont){
 				poweruptimer -= 1;
 				if(poweruptimer == 0){
 					returnToNormalcy(flyer);

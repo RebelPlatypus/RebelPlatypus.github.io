@@ -25,6 +25,7 @@ Preloader.prototype = {
 			this.load.image('drivingbear','assets/sprites/BearIsDriving.png');
 			this.load.image('powerup','assets/sprites/PowerUpBlock.jpg');
 			this.load.image('rocketflyer', 'assets/sprites/RocketFlyer.png');
+			this.load.image('bullet', 'assets/sprites/VisitorBullet.png');
 		
 		console.log("Resources loaded");
  	},
