@@ -18,7 +18,6 @@ Preloader.prototype = {
 		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
        		this.load.audio('madeon',['assets/music/cutthekid.mp3']);
         	this.load.script('filter','assets/effects/Plasma.js');
-        	this.load.image('block','assets/sprites/default.png');
         	this.load.image('bar','assets/sprites/BAR.png');	
 			this.load.image('stoneblock','assets/sprites/RockTile.jpg');
 			this.load.image('crackblock','assets/sprites/RockCrackTile.jpg');
