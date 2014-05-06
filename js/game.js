@@ -61,7 +61,7 @@ function crumble(sprite, block){
 function win() {
 	location.content = "Progress: " + 100 + "%!";
 	var text = "YOU WIN!";
-	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
+	var t = flyer.game.add.text(this.game.camera.x+200, 0, text, style);
 //	t.fixedToCamera = true;
 //	t.cameraOffset.setTo(250,25);
 	bar.kill();
