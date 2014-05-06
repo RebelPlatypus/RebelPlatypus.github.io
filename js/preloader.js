@@ -13,6 +13,9 @@ Preloader.prototype = {
 		console.log("Preloader starting");
 
 		//ADD PRELOAD BAR LOADING AND STARTING HERE!!!
+		this.loadingBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loadingBar');
+		this.loadingBar.anchor.setTo(0.5, 0.5);
+		this.load.setPreloadSprite(this.loadingBar);
 		// ^WHAT THIS SAYS!!
 
 		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);

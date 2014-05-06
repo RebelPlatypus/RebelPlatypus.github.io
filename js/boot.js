@@ -5,6 +5,7 @@ Boot.prototype = {
 	preload: function() { 
 
 		console.log("Boot loading started");
+		 this.load.image('loadingBar', 'assets/load.png');
 	},
 
 	create: function() { 
