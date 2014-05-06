@@ -191,7 +191,7 @@ Game.prototype = {
         		var b;
 				var y = this.game.world.randomY;
 				//Determining if the blocks are cracked or not.
-				if(i%60 == 0){
+				if(i%45 == 0){
 					b = powerblock.create(this.game.world.randomX, y, 'powerup');
 					b.health = 1;
 				}
