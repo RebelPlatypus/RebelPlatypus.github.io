@@ -18,6 +18,7 @@ var cont = true; //Whether or not you keep playing. Becomes false when you win o
 var bullet;
 var bulletup = false;
 var snag = false;
+var dark;
 
 function controls(game){
 	// Move the little guy!
@@ -60,9 +61,9 @@ function crumble(sprite, block){
 function win() {
 	location.content = "Progress: " + 100 + "%!";
 	var text = "YOU WIN!";
-	var t = this.game.add.text(0, 0, text, style);
-	t.fixedToCamera = true;
-	t.cameraOffset.setTo(250,25);
+	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
+//	t.fixedToCamera = true;
+//	t.cameraOffset.setTo(250,25);
 	bar.kill();
 	cont = false;
 }
@@ -80,21 +81,25 @@ function powerup(sprite, block){
 	returnToNormalcy(sprite);
 	block.damage(10);
 	var r = Math.random();//Randomly determining which power-ups we get.
-//	r = .66;
-	if (r < .25){
+	if (r < .2){
 		flyer.damage(1);
 		flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'drivingbear');
 		sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
 		sprite.game.camera.follow(flyer);
 		beardriving = true;
 	}
-	else if (r < .5){
+	else if (r < .4){
 		bullet = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'bullet');
 	    sprite.game.physics.enable(bullet, Phaser.Physics.ARCADE);
 		bullet.body.velocity.x = 400;
 		bulletup = true;
 	}
-	else if (r < .75){
+	else if (r < .6){
+		dark = sprite.game.add.sprite(sprite.body.x, sprite.body.y, 'dark');
+		dark.fixedToCamera = true;
+		dark.cameraOffset.setTo(0,0);
+	}
+	else if (r < .8){
 		snag = true;
 	}
 	else{
