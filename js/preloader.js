@@ -17,6 +17,7 @@ Preloader.prototype = {
 		this.loadingBar.anchor.setTo(0.5, 0.5);
 		this.load.setPreloadSprite(this.loadingBar);
 		// ^WHAT THIS SAYS!!
+		this.background = this.add.sprite(0, 0, 800, 800, 'backgroundLoad');
 
 		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
        		this.load.audio('madeon',['assets/music/cutthekid.mp3']);
