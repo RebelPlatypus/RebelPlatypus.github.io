@@ -191,7 +191,7 @@ Game.prototype = {
         		var b;
 				var y = this.game.world.randomY;
 				//Determining if the blocks are cracked or not.
-				if(i%45 == 0){
+				if(i%40 == 0){
 					b = powerblock.create(this.game.world.randomX, y, 'powerup');
 					b.health = 1;
 				}
@@ -213,7 +213,7 @@ Game.prototype = {
         	// Beware the bar
         	bar = this.game.add.sprite(0,0,'bar');
 			this.game.physics.enable(bar, Phaser.Physics.ARCADE);
-        	bar.body.velocity.x = 220;
+        	bar.body.velocity.x = 213;
         	bar.body.setSize(20,600,100,0);
          
         	/*// Update text
