@@ -17,14 +17,25 @@ var rocketboost = false;
 var cont = true; //Whether or not you keep playing. Becomes false when you win or lose.
 var bullet;
 var bulletup = false;
+var snag = false;
 
 function controls(game){
 	// Move the little guy!
 
-	//if(game.input.mousePointer.isDown){
+	if(!snag){
 		game.physics.arcade.moveToPointer(flyer,flyspeed);
-		if(flyspeed < 300) flyspeed += 15;
-	//}
+	}
+	else{
+		blocks.forEach(checkpointer,this,true);
+		cracks.forEach(checkpointer,this,true);
+	}
+}
+
+function checkpointer(sprite){
+//	console.log(Phaser.Input.activePointer)
+	if(sprite.input.checkPointerOver(sprite.game.input.activePointer)){
+		sprite.game.physics.arcade.moveToPointer(flyer,flyspeed);
+	}
 }
      
 // Kill a flyer caught by the bar
@@ -69,18 +80,22 @@ function powerup(sprite, block){
 	returnToNormalcy(sprite);
 	block.damage(10);
 	var r = Math.random();//Randomly determining which power-ups we get.
-	if (r < .33){
+//	r = .66;
+	if (r < .25){
 		flyer.damage(1);
 		flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'drivingbear');
 		sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
 		sprite.game.camera.follow(flyer);
 		beardriving = true;
 	}
-	else if (r < .66){
+	else if (r < .5){
 		bullet = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'bullet');
 	    sprite.game.physics.enable(bullet, Phaser.Physics.ARCADE);
 		bullet.body.velocity.x = 400;
 		bulletup = true;
+	}
+	else if (r < .75){
+		snag = true;
 	}
 	else{
 		flyer.damage(1);
@@ -107,6 +122,7 @@ function returnToNormalcy(sprite){
 	flyspeed = 300;
 	beardriving=false;
 	rocketboost=false;
+	snag = false;
 }
 //What happens when the bullet collides into an object
 function shoot(sprite, block){
@@ -146,8 +162,10 @@ Game.prototype = {
          //Block creation
         	// Create stone blocks
         	blocks = this.game.add.group();
-		blocks.enableBody = true;
-		blocks.physicsBodyType = Phaser.Physics.ARCADE;
+			blocks.enableBody = true;
+			blocks.physicsBodyType = Phaser.Physics.ARCADE;
+			
+		
 			//Create cracked blocks
 			cracks = this.game.add.group();
 			cracks.enableBody = true;
@@ -182,6 +200,7 @@ Game.prototype = {
 					b.health = 50;
 				}
 				b.body.immovable = true;
+				b.inputEnabled = true;
 				b.scale.x = 0.5;
 				b.scale.y = 0.5;
         	}
@@ -228,6 +247,11 @@ Game.prototype = {
         	if(flyer.x >=20000){
         	    bar.body.velocity.x=300;
         	}
+			
+			//Slow down the bar when the game gets screwy.
+			if(snag){
+				bar.body.velocity.x = 200;
+			}
          
         	// Collisions
         	this.game.physics.arcade.collide(flyer, blocks);
@@ -237,7 +261,7 @@ Game.prototype = {
 			this.game.physics.arcade.collide(bullet, cracks, shoot);
 			
 			//Wearing off powerups
-			if((beardriving||rocketboost||bulletup)&&cont){
+			if((beardriving||rocketboost||bulletup||snag)&&cont){
 				poweruptimer -= 1;
 				if(poweruptimer == 0){
 					returnToNormalcy(flyer);
