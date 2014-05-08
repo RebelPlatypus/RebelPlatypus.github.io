@@ -33,7 +33,7 @@ Preloader.prototype = {
 			this.load.audio('powerupsound','assets/sounds/powerup.wav');
 			this.load.audio('thump','assets/sounds/thump.wav');
 			this.load.audio('turkey','assets/sounds/turkey.wav');
-			this.load.audio('madeon','assets/sounds/cutthekid.mp3');
+			this.load.audio('madeon','assets/sounds/cutthekid.wav');
         	this.load.script('filter','assets/effects/Plasma.js');
         	this.load.image('bar','assets/sprites/BAR.png');
 			this.load.image('bg','assets/sprites/rainbackground.png');	
