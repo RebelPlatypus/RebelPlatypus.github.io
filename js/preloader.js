@@ -23,6 +23,7 @@ Preloader.prototype = {
 		
 
 		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
+		this.load.spritesheet('rain', 'assets/sprites/rain.png', 17, 17);
        		this.load.audio('button','assets/sounds/button.wav');
 			this.load.audio('crash','assets/sounds/crash.wav');
 			this.load.audio('death','assets/sounds/death.wav');
@@ -34,7 +35,6 @@ Preloader.prototype = {
 			this.load.audio('turkey','assets/sounds/turkey.wav');
 			this.load.audio('madeon','assets/sounds/cutthekid.mp3');
         	this.load.script('filter','assets/effects/Plasma.js');
-			this.load.script('filter2','assets/effects/Rain.js');
         	this.load.image('bar','assets/sprites/BAR.png');
 			this.load.image('bg','assets/sprites/rainbackground.png');	
 			this.load.image('stoneblock','assets/sprites/RockTile.jpg');

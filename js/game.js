@@ -50,6 +50,7 @@ function death(){
 
 //WHat happens when you collide into a cracked brick.
 function crumble(sprite, block){
+	crash.play();
    	sprite.body.velocity.x = 0;
 	block.damage(1);
 	if(beardriving) {block.damage(49);}
@@ -143,16 +144,39 @@ Game.prototype = {
 		console.log("Main Game Started");
 
 		// Funky background!
-        	background = game.add.tileSprite(0, 0, 800, 600, 'bg');
+        	background = game.add.sprite(0, 0, 'phaser');
 		    background.fixedToCamera = true;
-        	//filter2 = this.game.add.filter('filter2',800,600);
-        	//background.filters = [filter2];
+        	//filter = this.game.add.filter('Plasma',800,600);
+        	//background.filters = [filter];
 	
         	// Moving onward!
         	this.game.world.setBounds(0,0,30000,600);
+			
+			//rain!
+			var emitter = game.add.emitter(game.world.centerX, 0, 400);
+
+			emitter.width = game.world.width;
+			// emitter.angle = 30; // uncomment to set an angle for the rain.
+
+			emitter.makeParticles('rain');
+
+			emitter.minParticleScale = 0.1;
+			emitter.maxParticleScale = 0.5;
+
+			emitter.setYSpeed(300, 500);
+			emitter.setXSpeed(-5, 5);
+
+			emitter.minRotation = 0;
+			emitter.maxRotation = 0;
+
+			emitter.start(false, 1600, 5, 0);
+
          
         	// Compatability for 2.0.3
         	this.game.physics.startSystem(Phaser.Physics.ARCADE);
+			
+			//audio sprites
+			crash = this.game.add.audio('crash');
          
         	// Playable character
         	flyer = this.game.add.sprite(300,200,'flyer');
