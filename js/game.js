@@ -40,15 +40,6 @@ function checkpointer(sprite){
 	}
 }
      
-// Kill a flyer caught by the bar
-function death(){
-	flyer.damage(1);
-	var text = "YOU LOSE!";
-	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
-	cont = false;
-	music.pause();
-}
-
 //WHat happens when you collide into a cracked brick.
 function crumble(sprite, block){
 	crash.play();
@@ -130,6 +121,12 @@ function returnToNormalcy(sprite){
 	beardriving=false;
 	rocketboost=false;
 	snag = false;
+}
+function end(sprite, doom){
+	sprite.damage(1);
+	cont = false
+	var text = "YOU LOSE!";
+	var t = sprite.game.add.text(sprite.game.camera.x+200, 0, text, style);
 }
 //What happens when the bullet collides into an object
 function shoot(sprite, block){
@@ -266,9 +263,13 @@ Game.prototype = {
         	location.content = "Progress: " + distance + "%";
          
         	// Death by bar
-        	this.game.physics.arcade.overlap(flyer, bar, death, null, this);
- 
+//        	this.game.physics.arcade.overlap(flyer, bar, death, null, this);
+			
         	// Difficulty increase
+			if(flyer.x >= 0){
+				bar.body.velocity.x = 200;
+			}
+			
         	if(flyer.x >=10000){
         	    bar.body.velocity.x = 250;
         	}
@@ -289,6 +290,8 @@ Game.prototype = {
 			this.game.physics.arcade.collide(flyer, powerblock, powerup);
 			this.game.physics.arcade.collide(bullet, blocks, shoot);
 			this.game.physics.arcade.collide(bullet, cracks, shoot);
+			this.game.physics.arcade.collide(flyer, bar, end);
+
 			
 			//Wearing off powerups
 			if((beardriving||rocketboost||bulletup||snag)&&cont){
@@ -299,7 +302,6 @@ Game.prototype = {
 			}
          
         	// Winning!
-			//Currently not working.
         	if(flyer.body.x>=29700){
         		win();
         	}
