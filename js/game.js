@@ -77,7 +77,7 @@ function createCrack(b){
 function powerup(sprite, block){
 	returnToNormalcy(sprite);
 	block.damage(10);
-	var r = Math.random();//Randomly determining which power-ups we get.
+var r = Math.random();//Randomly determining which power-ups we get.
 	if (r < .2){
 		flyer.damage(1);
 		flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'drivingbear');

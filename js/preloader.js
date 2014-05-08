@@ -18,12 +18,7 @@ Preloader.prototype = {
 		this.loadingBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loadingBar');
 		this.loadingBar.anchor.setTo(0.5, 0.5);
 		this.load.setPreloadSprite(this.loadingBar);
-<<<<<<< HEAD
 		//this.background = this.add.sprite(0, 0, 800, 800, 'backgroundLoad');
-=======
-		// ^WHAT THIS SAYS!!
-		
->>>>>>> 20e76c5e76de685cffa1b0aafc81f75e0745dbf7
 
 		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
 		this.load.spritesheet('rain', 'assets/sprites/rain.png', 17, 17);
