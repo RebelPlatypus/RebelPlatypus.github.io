@@ -143,10 +143,8 @@ Game.prototype = {
 		console.log("Main Game Started");
 
 		// Funky background!
-        	background = this.game.add.sprite('bg', 0,0);
-			background.fixedToCamera = true;
-        	background.width = 800;
-        	background.height = 600;
+        	background = game.add.tileSprite(0, 0, 800, 600, 'bg');
+		    background.fixedToCamera = true;
         	//filter2 = this.game.add.filter('filter2',800,600);
         	//background.filters = [filter2];
 	
