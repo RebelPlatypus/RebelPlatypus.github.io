@@ -23,16 +23,16 @@ Preloader.prototype = {
 		
 
 		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
-       		this.load.audio('button','assets/sound/button.wav');
-			this.load.audio('crash','assets/sound/crash.wav');
-			this.load.audio('death','assets/sound/death.wav');
-			this.load.audio('ominous','assets/sound/ominous.wav');
-			this.load.audio('pew','assets/sound/pew.wav');
-			this.load.audio('powerdown','assets/sound/powerdown.wav');
-			this.load.audio('powerupsound','assets/sound/powerup.wav');
-			this.load.audio('thump','assets/sound/thump.wav');
-			this.load.audio('turkey','assets/sound/turkey.wav');
-			this.load.audio('madeon','assets/sound/cutthekid.mp3');
+       		this.load.audio('button','assets/sounds/button.wav');
+			this.load.audio('crash','assets/sounds/crash.wav');
+			this.load.audio('death','assets/sounds/death.wav');
+			this.load.audio('ominous','assets/sounds/ominous.wav');
+			this.load.audio('pew','assets/sounds/pew.wav');
+			this.load.audio('powerdown','assets/sounds/powerdown.wav');
+			this.load.audio('powerupsound','assets/sounds/powerup.wav');
+			this.load.audio('thump','assets/sounds/thump.wav');
+			this.load.audio('turkey','assets/sounds/turkey.wav');
+			this.load.audio('madeon','assets/sounds/cutthekid.mp3');
         	this.load.script('filter','assets/effects/Plasma.js');
 			this.load.script('filter2','assets/effects/Rain.js');
         	this.load.image('bar','assets/sprites/BAR.png');
