@@ -147,8 +147,8 @@ Game.prototype = {
 			background.fixedToCamera = true;
         	background.width = 800;
         	background.height = 600;
-        	filter2 = this.game.add.filter('filter2',800,600);
-        	background.filters = [filter2];
+        	//filter2 = this.game.add.filter('filter2',800,600);
+        	//background.filters = [filter2];
 	
         	// Moving onward!
         	this.game.world.setBounds(0,0,30000,600);
