@@ -20,6 +20,11 @@ var bulletup = false;
 var snag = false;
 var dark;
 
+var uiGroup;
+var progressBar;
+var progressFlier;
+var progressLine;
+
 function controls(game){
 	// Move the little guy!
 
@@ -57,7 +62,6 @@ function crumble(sprite, block){
 }
      
 // We've got a winner!
-//Bugged.
 function win() {
 	location.content = "Progress: " + 100 + "%!";
 	var text = "YOU WIN!";
@@ -136,12 +140,11 @@ function shoot(sprite, block){
 }
 
 Game.prototype = {
-
 	     
 	create: function() {
 		
 		console.log("Main Game Started");
-
+	
 		// Funky background!
         	background = this.game.add.sprite(0,0);
         	background.width = 800;
@@ -169,7 +172,6 @@ Game.prototype = {
         	blocks = this.game.add.group();
 			blocks.enableBody = true;
 			blocks.physicsBodyType = Phaser.Physics.ARCADE;
-			
 		
 			//Create cracked blocks
 			cracks = this.game.add.group();
@@ -185,7 +187,7 @@ Game.prototype = {
 			bullet = this.game.add.sprite(300,200, 'bullet');
 			this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
 			bullet.damage(10);
-
+	
 			//Placing the blocks
         	for(var i = 0; i<1500; i++){
         		var b;
@@ -212,18 +214,24 @@ Game.prototype = {
          
         	// Beware the bar
         	bar = this.game.add.sprite(0,0,'bar');
-			this.game.physics.enable(bar, Phaser.Physics.ARCADE);
+		this.game.physics.enable(bar, Phaser.Physics.ARCADE);
         	bar.body.velocity.x = 213;
         	bar.body.setSize(20,600,100,0);
          
-        	/*// Update text
-        	var t1 = this.game.add.text(10000, 0, "10,000!", style);
-        	var t2 = this.game.add.text(20000, 0, "20,000!", style); 
-        	location = this.game.add.text(0,0, "Progress: 0%", {font: "50px Arial", fill: "#ffffff", align: "center"});
-        	//location.fixedToCamera = true;
-        	//location.cameraOffset.setTo(260,525);
-         
-        	// Music
+		// UI Setup
+		uiGroup = this.game.add.group(null, 'UI');
+		progressBar = this.game.add.sprite(100, 515, 'loadingBar');
+		progressBar.fixedToCamera = true;
+	
+		progressFlyer = this.game.add.sprite(100, 500,'flyer');
+        	progressFlyer.animations.add('fly');
+        	progressFlyer.animations.play('fly',10,true);
+		progressFlyer.fixedToCamera = true;
+		
+		progressBar = this.game.add.sprite(100, 515, 'progressBar');
+		progressBar.fixedToCamera = true;
+
+        	/*// Music
         	music = this.game.add.audio('madeon',1,true);
         	music.play('',0,1,true);*/
  	},
@@ -239,6 +247,15 @@ Game.prototype = {
         	// Update game progress
         	var distance = Math.floor(((flyer.body.x)/30000)*100);
         	location.content = "Progress: " + distance + "%";
+
+		//Updates the UI
+		progressFlyer.fixedToCamera = false;
+		progressFlyer.x = 100 + (600 * (flyer.x/30000));
+		progressFlyer.fixedToCamera = true;
+
+		progressBar.fixedToCamera = false;
+		progressBar.x = 100 + (600 * (bar.x/30000));
+		progressBar.fixedToCamera = true;
          
         	// Death by bar
         	this.game.physics.arcade.overlap(flyer, bar, death, null, this);
@@ -274,7 +291,6 @@ Game.prototype = {
 			}
          
         	// Winning!
-			//Currently not working.
         	if(flyer.body.x>=29700){
         		win();
         	}
