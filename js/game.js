@@ -42,11 +42,12 @@ function checkpointer(sprite){
      
 // Kill a flyer caught by the bar
 function death(){
+	death.play();
 	flyer.kill();
-	//var text = "YOU LOSE!";
-	//var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
-	//cont = false;
-	//music.pause();
+	var text = "YOU LOSE!";
+	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
+	cont = false;
+	music.pause();
 }
 
 //WHat happens when you collide into a cracked brick.
@@ -80,6 +81,7 @@ function createCrack(b){
 }
 //When you collide with a power-up block, this activates the power up.
 function powerup(sprite, block){
+	powerupsound.play();
 	returnToNormalcy(sprite);
 	block.damage(10);
 	var r = Math.random();//Randomly determining which power-ups we get.
@@ -95,6 +97,7 @@ function powerup(sprite, block){
 	    sprite.game.physics.enable(bullet, Phaser.Physics.ARCADE);
 		bullet.body.velocity.x = 400;
 		bulletup = true;
+		pew.play();
 	}
 	else if (r < .6){
 		dark = sprite.game.add.sprite(sprite.body.x, sprite.body.y, 'dark');
@@ -118,6 +121,7 @@ function powerup(sprite, block){
 
 //After the power-up timer is up, this resets everything back to normal.
 function returnToNormalcy(sprite){
+	powerdown.play();
 	sprite.damage(1);
 	bullet.damage(10);
     flyer = sprite.game.add.sprite(sprite.body.x,sprite.body.y,'flyer');
@@ -160,9 +164,12 @@ Game.prototype = {
 			//audio sprites
 			crash = this.game.add.audio('crash');
 			death = this.game.add.audio('death');
+			powerupsound = this.game.add.audio('powerupsound');
+			powerdown = this.game.add.audio('powerdown');
+			pew = this.game.add.audio('pew');
          	
 			//rain!
-			emitter = this.game.add.emitter(this.game.world.centerX, 0, 400);
+			emitter = this.game.add.emitter(this.game.world.centerX, 0, 20000);
 
 			emitter.width = this.game.world.width;
 			// emitter.angle = 30; // uncomment to set an angle for the rain.
@@ -178,7 +185,7 @@ Game.prototype = {
 			emitter.minRotation = 0;
 			emitter.maxRotation = 0;
 
-			emitter.start(false, 1600, 1, 0);
+			emitter.start(false, 1600, 5, 0);
 			
         	// Playable character
         	flyer = this.game.add.sprite(300,200,'flyer');
