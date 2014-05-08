@@ -45,7 +45,6 @@ function death(){
 	flyer.kill();
 	var text = "YOU LOSE!";
 	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
-	death.play();
 	cont = false;
 	music.pause();
 }
@@ -179,7 +178,7 @@ Game.prototype = {
 			emitter.minRotation = 0;
 			emitter.maxRotation = 0;
 
-			emitter.start(false, 5600, 5, 0);
+			emitter.start(false, 1600, 50, 0);
 			
         	// Playable character
         	flyer = this.game.add.sprite(300,200,'flyer');
@@ -218,7 +217,7 @@ Game.prototype = {
 				var y = this.game.world.randomY;
 				//Determining if the blocks are cracked or not.
 				if(i%40 == 0){
-					b = powerblock.create(this.game.rnd.integerInRange(300, 30000), y, 'powerup');
+					b = powerblock.create(this.game.world.randomX, y, 'powerup');
 					b.health = 1;
 				}
 				else if(Math.abs(y-300) < 300*Math.random()){
