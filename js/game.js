@@ -43,10 +43,11 @@ function checkpointer(sprite){
 // Kill a flyer caught by the bar
 function death(){
 	flyer.kill();
-	var text = "YOU LOSE!";
-	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
-	cont = false;
-	music.pause();
+	///death.play
+	//var text = "YOU LOSE!";
+	//var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
+	//cont = false;
+	//music.pause();
 }
 
 //WHat happens when you collide into a cracked brick.
@@ -92,6 +93,7 @@ function powerup(sprite, block){
 	}
 	else if (r < .4){
 		bullet = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'bullet');
+		pew.play();
 	    sprite.game.physics.enable(bullet, Phaser.Physics.ARCADE);
 		bullet.body.velocity.x = 400;
 		bulletup = true;
@@ -118,6 +120,7 @@ function powerup(sprite, block){
 
 //After the power-up timer is up, this resets everything back to normal.
 function returnToNormalcy(sprite){
+	powerdown.play();
 	sprite.damage(1);
 	bullet.damage(10);
     flyer = sprite.game.add.sprite(sprite.body.x,sprite.body.y,'flyer');
@@ -160,6 +163,8 @@ Game.prototype = {
 			//audio sprites
 			crash = this.game.add.audio('crash');
 			death = this.game.add.audio('death');
+			pew = this.game.add.audio('pew');
+			powerdown = this.game.add.audio('powerdown');
          	
 			//rain!
 			emitter = this.game.add.emitter(this.game.world.centerX, 0, 400);
@@ -178,7 +183,7 @@ Game.prototype = {
 			emitter.minRotation = 0;
 			emitter.maxRotation = 0;
 
-			emitter.start(false, 1600, 50, 0);
+			emitter.start(false, 1600, 500, 0);
 			
         	// Playable character
         	flyer = this.game.add.sprite(300,200,'flyer');
