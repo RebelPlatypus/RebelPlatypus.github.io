@@ -19,6 +19,7 @@ var bullet;
 var bulletup = false;
 var snag = false;
 var dark;
+var emitter;
 
 function controls(game){
 	// Move the little guy!
@@ -151,11 +152,18 @@ Game.prototype = {
 	
         	// Moving onward!
         	this.game.world.setBounds(0,0,30000,600);
-			
-			//rain!
-			var emitter = this.game.add.emitter(game.world.centerX, 0, 400);
 
-			emitter.width = this.game.world.width;
+         
+        	// Compatability for 2.0.3
+        	this.game.physics.startSystem(Phaser.Physics.ARCADE);
+			
+			//audio sprites
+			crash = this.game.add.audio('crash');
+         	
+			//rain!
+			emitter = game.add.emitter(game.world.centerX, 0, 400);
+
+			emitter.width = game.world.width;
 			// emitter.angle = 30; // uncomment to set an angle for the rain.
 
 			emitter.makeParticles('rain');
@@ -170,14 +178,6 @@ Game.prototype = {
 			emitter.maxRotation = 0;
 
 			emitter.start(false, 1600, 5, 0);
-
-         
-        	// Compatability for 2.0.3
-        	this.game.physics.startSystem(Phaser.Physics.ARCADE);
-			
-			//audio sprites
-			crash = this.game.add.audio('crash');
-         
         	// Playable character
         	flyer = this.game.add.sprite(300,200,'flyer');
         	this.game.physics.enable(flyer, Phaser.Physics.ARCADE);
