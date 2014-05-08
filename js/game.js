@@ -43,7 +43,6 @@ function checkpointer(sprite){
 // Kill a flyer caught by the bar
 function death(){
 	flyer.kill();
-	///death.play
 	//var text = "YOU LOSE!";
 	//var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
 	//cont = false;
@@ -93,7 +92,6 @@ function powerup(sprite, block){
 	}
 	else if (r < .4){
 		bullet = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'bullet');
-		pew.play();
 	    sprite.game.physics.enable(bullet, Phaser.Physics.ARCADE);
 		bullet.body.velocity.x = 400;
 		bulletup = true;
@@ -120,7 +118,6 @@ function powerup(sprite, block){
 
 //After the power-up timer is up, this resets everything back to normal.
 function returnToNormalcy(sprite){
-	powerdown.play();
 	sprite.damage(1);
 	bullet.damage(10);
     flyer = sprite.game.add.sprite(sprite.body.x,sprite.body.y,'flyer');
@@ -163,8 +160,6 @@ Game.prototype = {
 			//audio sprites
 			crash = this.game.add.audio('crash');
 			death = this.game.add.audio('death');
-			pew = this.game.add.audio('pew');
-			powerdown = this.game.add.audio('powerdown');
          	
 			//rain!
 			emitter = this.game.add.emitter(this.game.world.centerX, 0, 400);
@@ -183,7 +178,7 @@ Game.prototype = {
 			emitter.minRotation = 0;
 			emitter.maxRotation = 0;
 
-			emitter.start(false, 1600, 500, 0);
+			emitter.start(false, 1600, 1, 0);
 			
         	// Playable character
         	flyer = this.game.add.sprite(300,200,'flyer');
@@ -222,15 +217,15 @@ Game.prototype = {
 				var y = this.game.world.randomY;
 				//Determining if the blocks are cracked or not.
 				if(i%40 == 0){
-					b = powerblock.create(this.game.world.randomX, y, 'powerup');
+					b = powerblock.create(this.game.rnd.integerInRange(200, 30000), y, 'powerup');
 					b.health = 1;
 				}
 				else if(Math.abs(y-300) < 300*Math.random()){
-					b = cracks.create(this.game.world.randomX, y, 'crackblock');
+					b = cracks.create(this.game.rnd.integerInRange(200, 30000), y, 'crackblock');
 					b.health = 50;
 				}
 				else{
-					b = blocks.create(this.game.world.randomX, y, 'stoneblock');
+					b = blocks.create(this.game.rnd.integerInRange(200, 30000), y, 'stoneblock');
 					b.events.onKilled.add(function(b) {createCrack(b);}, this);//When the block is 'destroyed', it becomes cracked.
 					b.health = 50;
 				}
