@@ -42,11 +42,11 @@ function checkpointer(sprite){
      
 // Kill a flyer caught by the bar
 function death(){
-	flyer.kill();
-	//var text = "YOU LOSE!";
-	//var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
-	//cont = false;
-	//music.pause();
+	flyer.damage(1);
+	var text = "YOU LOSE!";
+	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
+	cont = false;
+	music.pause();
 }
 
 //WHat happens when you collide into a cracked brick.
