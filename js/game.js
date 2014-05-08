@@ -234,8 +234,8 @@ Game.prototype = {
 		controls(this.game);
          
         	// Filter changes
-        	filter.update();
-        	filter.blueShift -=0.001;
+        	//filter.update();
+        	//filter.blueShift -=0.001;
          
         	// Update game progress
         	var distance = Math.floor(((flyer.body.x)/30000)*100);
