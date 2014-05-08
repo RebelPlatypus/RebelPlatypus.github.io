@@ -42,11 +42,12 @@ function checkpointer(sprite){
      
 // Kill a flyer caught by the bar
 function death(){
+	death.play();
 	flyer.kill();
 	var text = "YOU LOSE!";
 	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
 	cont = false;
-	//music.pause();
+	music.pause();
 }
 
 //WHat happens when you collide into a cracked brick.
@@ -159,6 +160,7 @@ Game.prototype = {
 			
 			//audio sprites
 			crash = this.game.add.audio('crash');
+			death = this.game.add.audio('death');
          	
 			//rain!
 			emitter = this.game.add.emitter(this.game.world.centerX, 0, 400);
@@ -168,8 +170,8 @@ Game.prototype = {
 
 			emitter.makeParticles('rain');
 
-			emitter.minParticleScale = 0.1;
-			emitter.maxParticleScale = 0.5;
+			emitter.minParticleScale = 0.2;
+			emitter.maxParticleScale = 0.6;
 
 			emitter.setYSpeed(300, 500);
 			emitter.setXSpeed(-5, 5);
@@ -178,6 +180,7 @@ Game.prototype = {
 			emitter.maxRotation = 0;
 
 			emitter.start(false, 1600, 5, 0);
+			
         	// Playable character
         	flyer = this.game.add.sprite(300,200,'flyer');
         	this.game.physics.enable(flyer, Phaser.Physics.ARCADE);
