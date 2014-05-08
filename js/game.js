@@ -144,7 +144,7 @@ Game.prototype = {
 		console.log("Main Game Started");
 
 		// Funky background!
-        	background = game.add.sprite(0, 0, 'bg');
+        	background = this.game.add.sprite(0, 0, 'bg');
 		    background.fixedToCamera = true;
         	//filter = this.game.add.filter('Plasma',800,600);
         	//background.filters = [filter];
