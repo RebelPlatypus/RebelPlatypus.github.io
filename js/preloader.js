@@ -11,18 +11,22 @@ Preloader.prototype = {
 	preload: function() {
 
 		console.log("Preloader starting");
+		
+		this.background = this.add.sprite(0, 0, 800, 800, 'backgroundLoad');
 
 		//ADD PRELOAD BAR LOADING AND STARTING HERE!!!
 		this.loadingBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loadingBar');
 		this.loadingBar.anchor.setTo(0.5, 0.5);
 		this.load.setPreloadSprite(this.loadingBar);
 		// ^WHAT THIS SAYS!!
-		//this.background = this.add.sprite(0, 0, 800, 800, 'backgroundLoad');
+		
 
 		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
        		this.load.audio('madeon',['assets/sound/cutthekid.mp3']);
         	this.load.script('filter','assets/effects/Plasma.js');
-        	this.load.image('bar','assets/sprites/BAR.png');	
+			this.load.script('filter2','assets/effects/rain.js');
+        	this.load.image('bar','assets/sprites/BAR.png');
+			this.load.image('bg','assets/sprites/rainbackground.png');	
 			this.load.image('stoneblock','assets/sprites/RockTile.jpg');
 			this.load.image('crackblock','assets/sprites/RockCrackTile.jpg');
 			this.load.image('drivingbear','assets/sprites/BearIsDriving.png');

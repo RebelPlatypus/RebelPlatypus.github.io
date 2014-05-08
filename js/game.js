@@ -143,11 +143,12 @@ Game.prototype = {
 		console.log("Main Game Started");
 
 		// Funky background!
-        	background = this.game.add.sprite(0,0);
+        	background = this.game.add.sprite('bg', 0,0);
+			background.fixedToCamera = true;
         	background.width = 800;
         	background.height = 600;
-        	filter = this.game.add.filter('Plasma',800,600);
-        	background.filters = [filter];
+        	filter2 = this.game.add.filter('filter2',800,600);
+        	background.filters = [filter2];
 	
         	// Moving onward!
         	this.game.world.setBounds(0,0,30000,600);
