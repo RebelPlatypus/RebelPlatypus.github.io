@@ -163,7 +163,7 @@ Game.prototype = {
 			//rain!
 			emitter = this.game.add.emitter(this.game.world.centerX, 0, 400);
 
-			emitter.width = game.world.width;
+			emitter.width = this.game.world.width;
 			// emitter.angle = 30; // uncomment to set an angle for the rain.
 
 			emitter.makeParticles('rain');
