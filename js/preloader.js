@@ -12,7 +12,7 @@ Preloader.prototype = {
 
 		console.log("Preloader starting");
 		
-		this.background = this.add.sprite(0, 0, 800, 800, 'backgroundLoad');
+		this.background = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'backgroundLoad');
 
 		//ADD PRELOAD BAR LOADING AND STARTING HERE!!!
 		this.loadingBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loadingBar');
