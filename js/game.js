@@ -19,6 +19,7 @@ var bullet;
 var bulletup = false;
 var snag = false;
 var dark;
+var emitter;
 
 var uiGroup;
 var progressBar;
@@ -44,17 +45,9 @@ function checkpointer(sprite){
 	}
 }
      
-// Kill a flyer caught by the bar
-function death(){
-	flyer.kill();
-	var text = "YOU LOSE!";
-	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
-	cont = false;
-	//music.pause();
-}
-
 //WHat happens when you collide into a cracked brick.
 function crumble(sprite, block){
+	crash.play();
    	sprite.body.velocity.x = 0;
 	block.damage(1);
 	if(beardriving) {block.damage(49);}
@@ -133,6 +126,12 @@ function returnToNormalcy(sprite){
 	rocketboost=false;
 	snag = false;
 }
+function end(sprite, doom){
+	sprite.damage(1);
+	cont = false
+	var text = "YOU LOSE!";
+	var t = sprite.game.add.text(sprite.game.camera.x+200, 0, text, style);
+}
 //What happens when the bullet collides into an object
 function shoot(sprite, block){
 	block.damage(50);
@@ -146,18 +145,41 @@ Game.prototype = {
 		console.log("Main Game Started");
 	
 		// Funky background!
-        	background = this.game.add.sprite(0,0);
-        	background.width = 800;
-        	background.height = 600;
-        	filter = this.game.add.filter('Plasma',800,600);
-        	background.filters = [filter];
+        	background = this.game.add.sprite(0, 0, 'bg');
+		    background.fixedToCamera = true;
+        	//filter = this.game.add.filter('Plasma',800,600);
+        	//background.filters = [filter];
 	
         	// Moving onward!
         	this.game.world.setBounds(0,0,30000,600);
+
          
         	// Compatability for 2.0.3
         	this.game.physics.startSystem(Phaser.Physics.ARCADE);
-         
+			
+			//audio sprites
+			crash = this.game.add.audio('crash');
+			death = this.game.add.audio('death');
+         	
+			//rain!
+			emitter = this.game.add.emitter(this.game.world.centerX, 0, 400);
+
+			emitter.width = this.game.world.width;
+			// emitter.angle = 30; // uncomment to set an angle for the rain.
+
+			emitter.makeParticles('rain', 0, 40000);
+
+			emitter.minParticleScale = 0.2;
+			emitter.maxParticleScale = 0.6;
+
+			emitter.setYSpeed(300, 500);
+			emitter.setXSpeed(-5, 5);
+
+			emitter.minRotation = 0;
+			emitter.maxRotation = 0;
+
+			emitter.start(false, 1600, 1, 0);
+			
         	// Playable character
         	flyer = this.game.add.sprite(300,200,'flyer');
         	this.game.physics.enable(flyer, Phaser.Physics.ARCADE);
@@ -194,15 +216,15 @@ Game.prototype = {
 				var y = this.game.world.randomY;
 				//Determining if the blocks are cracked or not.
 				if(i%40 == 0){
-					b = powerblock.create(this.game.world.randomX, y, 'powerup');
+					b = powerblock.create(this.game.rnd.integerInRange(400, 30000), y, 'powerup');
 					b.health = 1;
 				}
 				else if(Math.abs(y-300) < 300*Math.random()){
-					b = cracks.create(this.game.world.randomX, y, 'crackblock');
+					b = cracks.create(this.game.rnd.integerInRange(400, 30000), y, 'crackblock');
 					b.health = 50;
 				}
 				else{
-					b = blocks.create(this.game.world.randomX, y, 'stoneblock');
+					b = blocks.create(this.game.rnd.integerInRange(400, 30000), y, 'stoneblock');
 					b.events.onKilled.add(function(b) {createCrack(b);}, this);//When the block is 'destroyed', it becomes cracked.
 					b.health = 50;
 				}
@@ -231,9 +253,8 @@ Game.prototype = {
 		progressBar = this.game.add.sprite(100, 515, 'progressBar');
 		progressBar.fixedToCamera = true;
 
-        	/*// Music
         	music = this.game.add.audio('madeon',1,true);
-        	music.play('',0,1,true);*/
+        	music.play('',0,1,true);
  	},
 
 	update: function() { 
@@ -241,8 +262,8 @@ Game.prototype = {
 		controls(this.game);
          
         	// Filter changes
-        	filter.update();
-        	filter.blueShift -=0.001;
+        	//filter.update();
+        	//filter.blueShift -=0.001;
          
         	// Update game progress
         	var distance = Math.floor(((flyer.body.x)/30000)*100);
@@ -258,9 +279,13 @@ Game.prototype = {
 		progressBar.fixedToCamera = true;
          
         	// Death by bar
-        	this.game.physics.arcade.overlap(flyer, bar, death, null, this);
- 
+//        	this.game.physics.arcade.overlap(flyer, bar, death, null, this);
+			
         	// Difficulty increase
+			if(flyer.x >= 0){
+				bar.body.velocity.x = 200;
+			}
+			
         	if(flyer.x >=10000){
         	    bar.body.velocity.x = 250;
         	}
@@ -281,6 +306,8 @@ Game.prototype = {
 			this.game.physics.arcade.collide(flyer, powerblock, powerup);
 			this.game.physics.arcade.collide(bullet, blocks, shoot);
 			this.game.physics.arcade.collide(bullet, cracks, shoot);
+			this.game.physics.arcade.collide(flyer, bar, end);
+
 			
 			//Wearing off powerups
 			if((beardriving||rocketboost||bulletup||snag)&&cont){

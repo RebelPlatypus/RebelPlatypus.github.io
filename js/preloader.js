@@ -11,16 +11,35 @@ Preloader.prototype = {
 	preload: function() {
 
 		console.log("Preloader starting");
+		
+		this.background = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'backgroundLoad');
+		this.background.anchor.setTo(0.5, 0.5);
 
 		this.loadingBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loadingBar');
 		this.loadingBar.anchor.setTo(0.5, 0.5);
 		this.load.setPreloadSprite(this.loadingBar);
+<<<<<<< HEAD
 		//this.background = this.add.sprite(0, 0, 800, 800, 'backgroundLoad');
+=======
+		// ^WHAT THIS SAYS!!
+		
+>>>>>>> 20e76c5e76de685cffa1b0aafc81f75e0745dbf7
 
 		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
-       		this.load.audio('madeon',['assets/music/cutthekid.mp3']);
+		this.load.spritesheet('rain', 'assets/sprites/rain.png', 17, 17);
+       		this.load.audio('button','assets/sounds/button.wav');
+			this.load.audio('crash','assets/sounds/crash.wav');
+			this.load.audio('death','assets/sounds/death.wav');
+			this.load.audio('ominous','assets/sounds/ominous.wav');
+			this.load.audio('pew','assets/sounds/pew.wav');
+			this.load.audio('powerdown','assets/sounds/powerdown.wav');
+			this.load.audio('powerupsound','assets/sounds/powerup.wav');
+			this.load.audio('thump','assets/sounds/thump.wav');
+			this.load.audio('turkey','assets/sounds/turkey.wav');
+			this.load.audio('madeon','assets/sounds/cutthekid.wav');
         	this.load.script('filter','assets/effects/Plasma.js');
-        	this.load.image('bar','assets/sprites/BAR.png');	
+        	this.load.image('bar','assets/sprites/BAR.png');
+			this.load.image('bg','assets/sprites/rainbackground.png');	
 			this.load.image('stoneblock','assets/sprites/RockTile.jpg');
 			this.load.image('crackblock','assets/sprites/RockCrackTile.jpg');
 			this.load.image('drivingbear','assets/sprites/BearIsDriving.png');
@@ -42,17 +61,17 @@ Preloader.prototype = {
 
 
 		//Temporary Music loading bypass
-		console.log("Preloader processes finished");
-		this.game.state.start('MainMenu');
+		//console.log("Preloader processes finished");
+		//this.game.state.start('MainMenu');
 
-		/*//Waits for the music to finish loading
+		//Waits for the music to finish loading
 
    		if (this.cache.isSoundDecoded('madeon') && this.ready == false)
 		{
 			console.log("Preloader processes finished");
 			this.ready = true;
 			this.game.state.start('MainMenu');
-		}*/
+		}
 	}
 
 };
