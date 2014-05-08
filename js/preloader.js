@@ -20,7 +20,7 @@ Preloader.prototype = {
 		//this.background = this.add.sprite(0, 0, 800, 800, 'backgroundLoad');
 
 		this.load.spritesheet('flyer','assets/sprites/flying.png',63,65,5);
-       		this.load.audio('madeon',['assets/music/cutthekid.mp3']);
+       		this.load.audio('madeon',['assets/sound/cutthekid.mp3']);
         	this.load.script('filter','assets/effects/Plasma.js');
         	this.load.image('bar','assets/sprites/BAR.png');	
 			this.load.image('stoneblock','assets/sprites/RockTile.jpg');

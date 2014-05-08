@@ -221,11 +221,11 @@ Game.prototype = {
         	var t2 = this.game.add.text(20000, 0, "20,000!", style); 
         	location = this.game.add.text(0,0, "Progress: 0%", {font: "50px Arial", fill: "#ffffff", align: "center"});
         	//location.fixedToCamera = true;
-        	//location.cameraOffset.setTo(260,525);
+        	//location.cameraOffset.setTo(260,525);*/
          
-        	// Music
+        	
         	music = this.game.add.audio('madeon',1,true);
-        	music.play('',0,1,true);*/
+        	music.play('',0,1,true);
  	},
 
 	update: function() { 
