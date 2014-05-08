@@ -42,10 +42,10 @@ function checkpointer(sprite){
      
 // Kill a flyer caught by the bar
 function death(){
-	death.play();
 	flyer.kill();
 	var text = "YOU LOSE!";
 	var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
+	death.play();
 	cont = false;
 	music.pause();
 }
@@ -179,7 +179,7 @@ Game.prototype = {
 			emitter.minRotation = 0;
 			emitter.maxRotation = 0;
 
-			emitter.start(false, 1600, 5, 0);
+			emitter.start(false, 5600, 5, 0);
 			
         	// Playable character
         	flyer = this.game.add.sprite(300,200,'flyer');
