@@ -77,9 +77,9 @@ function createCrack(b){
 function powerup(sprite, block){
 	returnToNormalcy(sprite);
 	block.damage(10);
-	powerupsound.play();
 var r = Math.random();//Randomly determining which power-ups we get.
 	if (r < .2){
+		powerupsound.play();
 		flyer.damage(1);
 		flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'drivingbear');
 		sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
@@ -87,6 +87,7 @@ var r = Math.random();//Randomly determining which power-ups we get.
 		beardriving = true;
 	}
 	else if (r < .4){
+		powerupsound.play();
 		pew.play();
 		bullet = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'bullet');
 	    sprite.game.physics.enable(bullet, Phaser.Physics.ARCADE);
@@ -94,14 +95,17 @@ var r = Math.random();//Randomly determining which power-ups we get.
 		bulletup = true;
 	}
 	else if (r < .6){
+		powerupsound.play();
 		dark = sprite.game.add.sprite(sprite.body.x, sprite.body.y, 'dark');
 		dark.fixedToCamera = true;
 		dark.cameraOffset.setTo(0,0);
 	}
 	else if (r < .8){
+		powerupsound.play();
 		snag = true;
 	}
 	else{
+		powerupsound.play();
 		flyer.damage(1);
 		flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y, 'rocketflyer');
 		sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
@@ -117,7 +121,6 @@ var r = Math.random();//Randomly determining which power-ups we get.
 function returnToNormalcy(sprite){
 	sprite.damage(1);
 	bullet.damage(10);
-	powerdown.play();
     flyer = sprite.game.add.sprite(sprite.body.x,sprite.body.y,'flyer');
     sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
     flyer.animations.add('fly');
@@ -128,6 +131,7 @@ function returnToNormalcy(sprite){
 	beardriving=false;
 	rocketboost=false;
 	snag = false;
+	powerdown.play();
 }
 function end(sprite, doom){
 	death.play();
@@ -170,12 +174,12 @@ Game.prototype = {
 			pew = this.game.add.audio('pew');
          	
 			//rain!
-			emitter = this.game.add.emitter(this.game.world.centerX, 0, 40000);
+			emitter = this.game.add.emitter(this.game.world.centerX, 0);
 
 			emitter.width = this.game.world.width;
 			// emitter.angle = 30; // uncomment to set an angle for the rain.
 
-			emitter.makeParticles('rain');
+			emitter.makeParticles('rain', 0, 4000);
 
 			emitter.minParticleScale = 0.2;
 			emitter.maxParticleScale = 0.6;
