@@ -20,6 +20,7 @@ var bulletup = false;
 var snag = false;
 var dark;
 var emitter;
+var rkey;
 
 var uiGroup;
 var progressBar;
@@ -251,6 +252,9 @@ Game.prototype = {
 		this.game.physics.enable(bar, Phaser.Physics.ARCADE);
         	bar.body.velocity.x = 213;
         	bar.body.setSize(20,600,100,0);
+			
+			//Restart key
+			rkey = this.input.keyboard.addKey(Phaser.Keyboard.R);
          
 		// UI Setup
 		uiGroup = this.game.add.group(null, 'UI');
@@ -333,5 +337,10 @@ Game.prototype = {
         	if(flyer.body.x>=29700){
         		win();
         	}
+			
+			//Restart
+			if(rkey.isDown){
+				this.state.start('MainMenu');
+			}
 	}
 };
