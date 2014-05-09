@@ -77,6 +77,7 @@ function createCrack(b){
 function powerup(sprite, block){
 	returnToNormalcy(sprite);
 	block.damage(10);
+	powerupsound.play();
 var r = Math.random();//Randomly determining which power-ups we get.
 	if (r < .2){
 		flyer.damage(1);
@@ -86,6 +87,7 @@ var r = Math.random();//Randomly determining which power-ups we get.
 		beardriving = true;
 	}
 	else if (r < .4){
+		pew.play();
 		bullet = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'bullet');
 	    sprite.game.physics.enable(bullet, Phaser.Physics.ARCADE);
 		bullet.body.velocity.x = 400;
@@ -115,6 +117,7 @@ var r = Math.random();//Randomly determining which power-ups we get.
 function returnToNormalcy(sprite){
 	sprite.damage(1);
 	bullet.damage(10);
+	powerdown.play();
     flyer = sprite.game.add.sprite(sprite.body.x,sprite.body.y,'flyer');
     sprite.game.physics.enable(flyer, Phaser.Physics.ARCADE);
     flyer.animations.add('fly');
@@ -127,10 +130,12 @@ function returnToNormalcy(sprite){
 	snag = false;
 }
 function end(sprite, doom){
+	death.play();
 	sprite.damage(1);
 	cont = false
 	var text = "YOU LOSE!";
 	var t = sprite.game.add.text(sprite.game.camera.x+200, 0, text, style);
+	music.pause();
 }
 //What happens when the bullet collides into an object
 function shoot(sprite, block){
@@ -160,6 +165,9 @@ Game.prototype = {
 			//audio sprites
 			crash = this.game.add.audio('crash');
 			death = this.game.add.audio('death');
+			powerdown = this.game.add.audio('powerdown');
+			powerupsound = this.game.add.audio('powerup');
+			pew = this.game.add.audio('pew');
          	
 			//rain!
 			emitter = this.game.add.emitter(this.game.world.centerX, 0, 40000);
