@@ -170,7 +170,7 @@ Game.prototype = {
 			crash = this.game.add.audio('crash');
 			death = this.game.add.audio('death');
 			powerdown = this.game.add.audio('powerdown');
-			powerupsound = this.game.add.audio('powerup');
+			powerupsound = this.game.add.audio('powerupsound');
 			pew = this.game.add.audio('pew');
          	
 			//rain!
@@ -291,6 +291,8 @@ Game.prototype = {
 		progressBar.x = 100 + (600 * (bar.x/30000));
 		progressBar.fixedToCamera = true;
          
+       
+		
         	// Death by bar
 //        	this.game.physics.arcade.overlap(flyer, bar, death, null, this);
 			

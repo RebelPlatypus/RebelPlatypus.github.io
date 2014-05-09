@@ -2,6 +2,7 @@ var Menu = function(game) { };
 	
 	function startGame (pointer) {
 	
+		button.play();
 		this.game.state.start('Game');
 
 	}
@@ -17,6 +18,7 @@ Menu.prototype = {
 		
 		console.log("Main Menu Entered");
 		//this.game.state.start('Game');
+		this.add.audio('button');
 		
 		this.background = this.add.sprite(0, 0, 'backgroundLoad');
 		this.playButton = this.add.button(300, 350, 'playButton', startGame, this, 'buttonHover.png', 'button.png', 'buttonHover.png');
