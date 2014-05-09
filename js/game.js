@@ -174,9 +174,9 @@ Game.prototype = {
 			pew = this.game.add.audio('pew');
          	
 			//rain!
-			emitter = this.game.add.emitter(400, 0, 400);
+			emitter = this.game.add.emitter(500, 0, 600);
 
-			emitter.width = 800;
+			emitter.width = 1200;
 			emitter.fixedToCamera = true;
 			// emitter.angle = 30; // uncomment to set an angle for the rain.
 
