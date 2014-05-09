@@ -162,12 +162,12 @@ Game.prototype = {
 			death = this.game.add.audio('death');
          	
 			//rain!
-			emitter = this.game.add.emitter(this.game.world.centerX, 0, 400);
+			emitter = this.game.add.emitter(this.game.world.centerX, 0, 40000);
 
 			emitter.width = this.game.world.width;
 			// emitter.angle = 30; // uncomment to set an angle for the rain.
 
-			emitter.makeParticles('rain', 0, 40000);
+			emitter.makeParticles('rain');
 
 			emitter.minParticleScale = 0.2;
 			emitter.maxParticleScale = 0.6;
@@ -217,15 +217,15 @@ Game.prototype = {
 				var y = this.game.world.randomY;
 				//Determining if the blocks are cracked or not.
 				if(i%40 == 0){
-					b = powerblock.create(this.game.rnd.integerInRange(400, 30000), y, 'powerup');
+					b = powerblock.create(this.game.rnd.integerInRange(700, 30000), y, 'powerup');
 					b.health = 1;
 				}
 				else if(Math.abs(y-300) < 300*Math.random()){
-					b = cracks.create(this.game.rnd.integerInRange(400, 30000), y, 'crackblock');
+					b = cracks.create(this.game.rnd.integerInRange(700, 30000), y, 'crackblock');
 					b.health = 50;
 				}
 				else{
-					b = blocks.create(this.game.rnd.integerInRange(400, 30000), y, 'stoneblock');
+					b = blocks.create(this.game.rnd.integerInRange(700, 30000), y, 'stoneblock');
 					b.events.onKilled.add(function(b) {createCrack(b);}, this);//When the block is 'destroyed', it becomes cracked.
 					b.health = 50;
 				}
