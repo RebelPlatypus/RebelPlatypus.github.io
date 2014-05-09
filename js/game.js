@@ -20,7 +20,6 @@ var bulletup = false;
 var snag = false;
 var dark;
 var emitter;
-var rkey;
 
 var uiGroup;
 var progressBar;
@@ -175,12 +174,13 @@ Game.prototype = {
 			pew = this.game.add.audio('pew');
          	
 			//rain!
-			emitter = this.game.add.emitter(this.game.world.centerX, 0);
+			emitter = this.game.add.emitter(400, 0, 400);
 
-			emitter.width = this.game.world.width;
+			emitter.width = 800;
+			emitter.fixedToCamera = true;
 			// emitter.angle = 30; // uncomment to set an angle for the rain.
 
-			emitter.makeParticles('rain', 0, 4000);
+			emitter.makeParticles('rain',);
 
 			emitter.minParticleScale = 0.2;
 			emitter.maxParticleScale = 0.6;
@@ -252,9 +252,6 @@ Game.prototype = {
 		this.game.physics.enable(bar, Phaser.Physics.ARCADE);
         	bar.body.velocity.x = 213;
         	bar.body.setSize(20,600,100,0);
-			
-			//Restart key
-			rkey = this.input.keyboard.addKey(Phaser.Keyboard.R);
          
 		// UI Setup
 		uiGroup = this.game.add.group(null, 'UI');
@@ -337,10 +334,5 @@ Game.prototype = {
         	if(flyer.body.x>=29700){
         		win();
         	}
-			
-			//Restart
-			if(rkey.isDown){
-				this.state.start('MainMenu');
-			}
 	}
 };
