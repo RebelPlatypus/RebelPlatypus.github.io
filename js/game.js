@@ -21,6 +21,11 @@ var snag = false;
 var dark;
 var emitter;
 
+var uiGroup;
+var progressBar;
+var progressFlier;
+var progressLine;
+
 function controls(game){
 	// Move the little guy!
 
@@ -40,15 +45,6 @@ function checkpointer(sprite){
 	}
 }
      
-// Kill a flyer caught by the bar
-function death(){
-	flyer.kill();
-	//var text = "YOU LOSE!";
-	//var t = this.game.add.text(this.game.camera.x+200, 0, text, style);
-	//cont = false;
-	//music.pause();
-}
-
 //WHat happens when you collide into a cracked brick.
 function crumble(sprite, block){
 	crash.play();
@@ -59,7 +55,6 @@ function crumble(sprite, block){
 }
      
 // We've got a winner!
-//Bugged.
 function win() {
 	location.content = "Progress: " + 100 + "%!";
 	var text = "YOU WIN!";
@@ -82,7 +77,7 @@ function createCrack(b){
 function powerup(sprite, block){
 	returnToNormalcy(sprite);
 	block.damage(10);
-	var r = Math.random();//Randomly determining which power-ups we get.
+var r = Math.random();//Randomly determining which power-ups we get.
 	if (r < .2){
 		flyer.damage(1);
 		flyer = sprite.game.add.sprite(sprite.body.x, sprite.body.y,'drivingbear');
@@ -131,6 +126,12 @@ function returnToNormalcy(sprite){
 	rocketboost=false;
 	snag = false;
 }
+function end(sprite, doom){
+	sprite.damage(1);
+	cont = false
+	var text = "YOU LOSE!";
+	var t = sprite.game.add.text(sprite.game.camera.x+200, 0, text, style);
+}
 //What happens when the bullet collides into an object
 function shoot(sprite, block){
 	block.damage(50);
@@ -138,12 +139,11 @@ function shoot(sprite, block){
 }
 
 Game.prototype = {
-
 	     
 	create: function() {
 		
 		console.log("Main Game Started");
-
+	
 		// Funky background!
         	background = this.game.add.sprite(0, 0, 'bg');
 		    background.fixedToCamera = true;
@@ -194,7 +194,6 @@ Game.prototype = {
         	blocks = this.game.add.group();
 			blocks.enableBody = true;
 			blocks.physicsBodyType = Phaser.Physics.ARCADE;
-			
 		
 			//Create cracked blocks
 			cracks = this.game.add.group();
@@ -210,7 +209,7 @@ Game.prototype = {
 			bullet = this.game.add.sprite(300,200, 'bullet');
 			this.game.physics.enable(bullet, Phaser.Physics.ARCADE);
 			bullet.damage(10);
-
+	
 			//Placing the blocks
         	for(var i = 0; i<1500; i++){
         		var b;
@@ -237,18 +236,23 @@ Game.prototype = {
          
         	// Beware the bar
         	bar = this.game.add.sprite(0,0,'bar');
-			this.game.physics.enable(bar, Phaser.Physics.ARCADE);
+		this.game.physics.enable(bar, Phaser.Physics.ARCADE);
         	bar.body.velocity.x = 213;
         	bar.body.setSize(20,600,100,0);
          
-        	/*// Update text
-        	var t1 = this.game.add.text(10000, 0, "10,000!", style);
-        	var t2 = this.game.add.text(20000, 0, "20,000!", style); 
-        	location = this.game.add.text(0,0, "Progress: 0%", {font: "50px Arial", fill: "#ffffff", align: "center"});
-        	//location.fixedToCamera = true;
-        	//location.cameraOffset.setTo(260,525);*/
-         
-        	
+		// UI Setup
+		uiGroup = this.game.add.group(null, 'UI');
+		progressBar = this.game.add.sprite(100, 515, 'loadingBar');
+		progressBar.fixedToCamera = true;
+	
+		progressFlyer = this.game.add.sprite(100, 500,'flyer');
+        	progressFlyer.animations.add('fly');
+        	progressFlyer.animations.play('fly',10,true);
+		progressFlyer.fixedToCamera = true;
+		
+		progressBar = this.game.add.sprite(100, 515, 'progressBar');
+		progressBar.fixedToCamera = true;
+
         	music = this.game.add.audio('madeon',1,true);
         	music.play('',0,1,true);
  	},
@@ -264,11 +268,24 @@ Game.prototype = {
         	// Update game progress
         	var distance = Math.floor(((flyer.body.x)/30000)*100);
         	location.content = "Progress: " + distance + "%";
+
+		//Updates the UI
+		progressFlyer.fixedToCamera = false;
+		progressFlyer.x = 100 + (600 * (flyer.x/30000));
+		progressFlyer.fixedToCamera = true;
+
+		progressBar.fixedToCamera = false;
+		progressBar.x = 100 + (600 * (bar.x/30000));
+		progressBar.fixedToCamera = true;
          
         	// Death by bar
-        	this.game.physics.arcade.overlap(flyer, bar, death, null, this);
- 
+//        	this.game.physics.arcade.overlap(flyer, bar, death, null, this);
+			
         	// Difficulty increase
+			if(flyer.x >= 0){
+				bar.body.velocity.x = 200;
+			}
+			
         	if(flyer.x >=10000){
         	    bar.body.velocity.x = 250;
         	}
@@ -289,6 +306,8 @@ Game.prototype = {
 			this.game.physics.arcade.collide(flyer, powerblock, powerup);
 			this.game.physics.arcade.collide(bullet, blocks, shoot);
 			this.game.physics.arcade.collide(bullet, cracks, shoot);
+			this.game.physics.arcade.collide(flyer, bar, end);
+
 			
 			//Wearing off powerups
 			if((beardriving||rocketboost||bulletup||snag)&&cont){
@@ -299,7 +318,6 @@ Game.prototype = {
 			}
          
         	// Winning!
-			//Currently not working.
         	if(flyer.body.x>=29700){
         		win();
         	}
