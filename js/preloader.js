@@ -43,6 +43,7 @@ Preloader.prototype = {
 			this.load.image('bullet', 'assets/sprites/VisitorBullet.png');
 			this.load.image('dark', 'assets/sprites/Darkness.png');
 			this.load.image('progressBar', 'assets/sprites/progressBar.png');
+		this.load.atlas('playButton', 'assets/sprites/button_sheet.png', 'assets/sprites/button_sheet.json');
 		
 		console.log("Resources loaded");
  	},
