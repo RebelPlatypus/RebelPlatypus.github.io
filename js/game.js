@@ -180,7 +180,7 @@ Game.prototype = {
 			emitter.fixedToCamera = true;
 			// emitter.angle = 30; // uncomment to set an angle for the rain.
 
-			emitter.makeParticles('rain',);
+			emitter.makeParticles('rain');
 
 			emitter.minParticleScale = 0.2;
 			emitter.maxParticleScale = 0.6;
